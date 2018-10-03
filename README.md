@@ -112,6 +112,8 @@ In this step we'll setup our GraphQL server along with the built in graphiql tes
     * Navigate to `http://localhost:3001/graphiql`
     * Explore your `schema` with the interactive docs on the right
     * Query for your products using the pane on the left
+    * You should see an array of products on the right pane
+* From here on out, any time your `Schema` changes, you'll need to refresh your browser so it has the latest version.
 
 
 ### Solution
@@ -171,66 +173,141 @@ server.start(options, () =>
 
 ### Summary
 
-In this step we'll setup our GraphQL server along with the built in graphiql testing tool. We'll also make our first request to Query data from our graphql server.
+Now that our server is running, let's create a Query that will allow us to retrieve data on a single Product instead of all of our Products.
 
 ### Instructions
-* Navigate to the `index.js` file
-* Start by installing `graphql-apollo`
-* Then, require and destructure `GraphQLServer` from `graphql-apollo`
-* Next, bring your `typeDefs` and `resolver` files into the index.
-    * The resolver file can simply be required
-    * Node does not know how to read `.graphql` files
-        * We'll need to use the built in `fs` (file system) module's `readFileSync` property to read the file as `utf8`.
-        * Set the output equal to a variable called `typeDefs`
-* Create an options object with port, endpoint, and playground properties
-    * The port should be 3001
-    * The endpoint should be `/graphql` This is used to send requests from the client to the server.
-    * The playground should be `/graphiql` This is our testing endpoint that enables and makes graphiql viewable in the browser
-* Create your server
-    * Declare a variable called server
-    * Set server equal to a `new` GraphQLServer
-    * Pass it a config object with your typeDefs and resolver as properties.
-    * In addition, you can pass a context object that has access to the `req` object from express, but we won't be using it for this project. More on that <a href="https://github.com/prisma/graphql-yoga#constructorprops-props-graphqlserver">here.</a>
-    * Start your server by calling `server.start`
-        * Pass it the `options` from above
-        * Pass it a callback to log the port from the options object
+* Navigate to the `typeDefs.graphql` file
+* Add a property to our Query type called product
+    * It should expect an id as an argument and optionally return a Product
+* Next, navigate to `resolvers.js`
+* Add a resolver on our Query called product
+    * resolver functions receive 3 arguments
+        * parent (usually denoted by an _ because we won't be using it)
+        * args (an object with any arguments, such as id, that are received by the Query or Mutation)
+        * context (if we're using it)
+    * product should return a product if one matches the passed in id, or throw an error if there is no matching product.
+* Test in graphiql
 
 
 ### Solution
 
 <details>
 
-<summary> <code> index.js </code> </summary>
+<summary> <code> resolvers.js </code> </summary>
 
 ```
-const { readFileSync } = require('fs');
-const { GraphQLServer } = require('graphql-yoga');
+let products = require('../models/products');
 
-const typeDefs = readFileSync(`${__dirname}/schema/typeDefs.graphql`, 'utf8');
-const resolvers = require('./schema/resolvers');
+const resolvers = {
+  Query: {
+    products() {
+      return products;
+    },
+    product(_, { id }) {
+     const item = products.find(val => val.id === +id);
+     if (!item) {
+        throw new Error(`No Product With ID: ${id}`)
+     }
+      return products.find(val => val.id === +id);
+    }
+  }
+}
 
-const options = {
-  port: 3001,
-  endpoint: '/graphql',
-  playground: '/graphiql'
-};
+```
 
-const server = new GraphQLServer({
-  typeDefs,
-  resolvers,
-  // optional context function that accessesg the req object from express
-  context: req => ({
-    ...req.request
-  })
-});
+</details>
+<details>
 
-server.start(options, () =>
-  console.log(`Server is running on localhost:${options.port}`)
-);
+<summary> <code> typeDefs.graphql </code> </summary>
+
+```
+type Product {
+  id: ID!
+  title: String!
+  color: String!
+  category: String!
+  price: Int!
+}
+type Query {
+  products: [Product!]!
+  product(id: ID!): Product
+}
+
 ```
 
 </details>
 
+## Step 4
+
+### Summary
+
+For this step, we'll add a cart and full CRUD functionality for our cart.
+
+### Instructions
+* Navigate to the `typeDefs.graphql` file
+    * Here we'll add a quantity property to our Product type
+    * It should be optional
+    * It will only exist on Products in the `cart`
+* Add a `cart` Query
+    * It should expect an array of Products that may or may not be empty, but will always be an array.
+* Next, navigate to `resolvers.js`
+* Add a cart variable at the top of the document and default it to an empty array
+* Add a `cart` query that returns the cart.
+* Test in graphiql
+
+
+### Solution
+
+<details>
+
+<summary> <code> resolvers.js </code> </summary>
+
+```
+let products = require('../models/products');
+
+const resolvers = {
+  Query: {
+    products() {
+      return products;
+    },
+    product(_, { id }) {
+     const item = products.find(val => val.id === +id);
+     if (!item) {
+        throw new Error(`No Product With ID: ${id}`)
+     }
+      return products.find(val => val.id === +id);
+    },
+    cart() {
+      return cart;
+    }
+  }
+}
+
+```
+
+</details>
+<details>
+
+<summary> <code> typeDefs.js </code> </summary>
+
+```
+type Product {
+  id: ID!
+  title: String!
+  color: String!
+  category: String!
+  price: Int!
+  quantity: Int
+}
+type Query {
+  products: [Product!]!
+  product(id: ID!): Product
+  cart: [Product]!
+}
+
+```
+
+</details>
 
 ## Contributions
 

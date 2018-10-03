@@ -1,0 +1,18 @@
+type Product {
+  id: ID!
+  title: String!
+  color: String!
+  category: String!
+  price: Int!
+  quantity: Int
+}
+type Query {
+  products: [Product!]!
+  product(id: ID!): Product
+  cart: [Product]!
+}
+type Mutation {
+  addProductToCart(id: ID!): [Product]!
+  removeProductFromCart(id: ID!): ID!
+  updateQuantity(id: ID!, change: String!): Product
+}

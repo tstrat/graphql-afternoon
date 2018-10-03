@@ -107,6 +107,11 @@ In this step we'll setup our GraphQL server along with the built in graphiql tes
     * Start your server by calling `server.start`
         * Pass it the `options` from above
         * Pass it a callback to log the port from the options object
+* Test!
+    * Make sure your server is running, if not, debug!
+    * Navigate to `http://localhost:3001/graphiql`
+    * Explore your `schema` with the interactive docs on the right
+    * Query for your products using the pane on the left
 
 
 ### Solution
@@ -131,7 +136,7 @@ const options = {
 const server = new GraphQLServer({
   typeDefs,
   resolvers,
-  // optional context function that accesses the req object from express
+  // optional context function that accessesg the req object from express
   context: req => ({
     ...req.request
   })
@@ -143,6 +148,89 @@ server.start(options, () =>
 ```
 
 </details>
+
+<details>
+
+<summary> <code> Graphiql Interface </code> </summary>
+
+```
+{
+    products {
+        id
+        title
+        category
+        price
+        color
+    }
+}
+```
+
+</details>
+
+## Step 4
+
+### Summary
+
+In this step we'll setup our GraphQL server along with the built in graphiql testing tool. We'll also make our first request to Query data from our graphql server.
+
+### Instructions
+* Navigate to the `index.js` file
+* Start by installing `graphql-apollo`
+* Then, require and destructure `GraphQLServer` from `graphql-apollo`
+* Next, bring your `typeDefs` and `resolver` files into the index.
+    * The resolver file can simply be required
+    * Node does not know how to read `.graphql` files
+        * We'll need to use the built in `fs` (file system) module's `readFileSync` property to read the file as `utf8`.
+        * Set the output equal to a variable called `typeDefs`
+* Create an options object with port, endpoint, and playground properties
+    * The port should be 3001
+    * The endpoint should be `/graphql` This is used to send requests from the client to the server.
+    * The playground should be `/graphiql` This is our testing endpoint that enables and makes graphiql viewable in the browser
+* Create your server
+    * Declare a variable called server
+    * Set server equal to a `new` GraphQLServer
+    * Pass it a config object with your typeDefs and resolver as properties.
+    * In addition, you can pass a context object that has access to the `req` object from express, but we won't be using it for this project. More on that <a href="https://github.com/prisma/graphql-yoga#constructorprops-props-graphqlserver">here.</a>
+    * Start your server by calling `server.start`
+        * Pass it the `options` from above
+        * Pass it a callback to log the port from the options object
+
+
+### Solution
+
+<details>
+
+<summary> <code> index.js </code> </summary>
+
+```
+const { readFileSync } = require('fs');
+const { GraphQLServer } = require('graphql-yoga');
+
+const typeDefs = readFileSync(`${__dirname}/schema/typeDefs.graphql`, 'utf8');
+const resolvers = require('./schema/resolvers');
+
+const options = {
+  port: 3001,
+  endpoint: '/graphql',
+  playground: '/graphiql'
+};
+
+const server = new GraphQLServer({
+  typeDefs,
+  resolvers,
+  // optional context function that accessesg the req object from express
+  context: req => ({
+    ...req.request
+  })
+});
+
+server.start(options, () =>
+  console.log(`Server is running on localhost:${options.port}`)
+);
+```
+
+</details>
+
 
 ## Contributions
 

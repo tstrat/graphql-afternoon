@@ -89,7 +89,7 @@ In this step we'll setup our GraphQL server along with the built in graphiql tes
 
 ### Instructions
 * Navigate to the `index.js` file
-* Start by installing `graphql-apollo`
+* Start by installing `graphql-apollo` from npm
 * Then, require and destructure `GraphQLServer` from `graphql-apollo`
 * Next, bring your `typeDefs` and `resolver` files into the index.
     * The resolver file can simply be required
@@ -380,7 +380,7 @@ In this step we'll write the resolver functions that will match up to our `Mutat
                 * If it is, add one to the quantity
                 * If it isn't, find and clone the product, add a quantity property to the clone, and push the clone into the cart
                 * Throw an error if the `id` is not found in the products
-                * Return the cart
+            * Return the cart
         * `removeProductFromCart`
             * Expects an `id` argument
             * Throw an error if the `id` is not in the cart
@@ -392,6 +392,7 @@ In this step we'll write the resolver functions that will match up to our `Mutat
             * If the `change` is `up` and one to the matching cartItems quantity
             * If the `change` is `down` and the cartItems quantity is greater than 0, subtract one from the quantity.
             * Return the cartItem
+* Test in graphiql
 
 ### Solution
 
@@ -460,7 +461,16 @@ module.exports = resolvers;
 ```
 </details>
 
+* We should now have a functioning GraphQL API!
 
+### Next Steps
+
+The following is optional. There are currently no instructions for client setup.
+
+Integrate one or several of your features using the Apollo Client for React. `create-react-app` has already been run for you. You'll need to install the Apollo dependencies, create an Apollo Client, and setup the Apollo Provider to get started.
+For a refresher, checkout the Apollo Graphql getting started section <a href="https://www.apollographql.com/docs/react/essentials/get-started.html">here.</a> This will walk you through what you need to install and how to get all the pieces setup.
+
+Be imaginative, or build a vanilla ecommerce frontend, it's up to you!
 
 ## Contributions
 

@@ -423,17 +423,20 @@ const resolvers = {
       } else {
         const product = products.find(val => val.id === +id);
         if (!product) {
-            throw new Error(`No product with ID: ${id}`)
+          throw new Error(`No Product With ID: ${id}`);
         }
-        product.quantity = 1;
-        cart.push(product);
+        const productClone = {
+          ...product,
+          quantity: 1
+        };
+        cart.push(productClone);
       }
       return cart;
     },
     removeProductFromCart(_, { id }, req) {
       const cartItem = cart.find(val => val.id === +id);
       if (!cartItem) {
-        throw new Error(`No product with ID: ${id}`)
+        throw new Error(`No Item With ID: ${id}`);
       }
       cart = cart.filter(val => val.id !== +id);
       return id;

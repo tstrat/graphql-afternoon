@@ -89,8 +89,8 @@ In this step we'll setup our GraphQL server along with the built in graphiql tes
 
 ### Instructions
 * Navigate to the `index.js` file
-* Start by installing `graphql-apollo` from npm
-* Then, require and destructure `GraphQLServer` from `graphql-apollo`
+* Start by installing `graphql-yoga` from npm
+* Then, require and destructure `GraphQLServer` from `graphql-yoga`
 * Next, bring your `typeDefs` and `resolver` files into the index.
     * The resolver file can simply be required
     * Node does not know how to read `.graphql` files

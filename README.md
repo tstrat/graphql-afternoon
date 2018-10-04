@@ -2,7 +2,7 @@
 
 # Project Summary
 
-In this project, we'll create a graphql back-end for an ecommerce site. Our goal will be to have a functioning cart that we can add items to, retrieve items from, edit quantities, and remove items from. In addition, we should be able to access products and specific products.
+In this project, we'll create a graphql back-end for an ecommerce site. Our goal will be to have a functioning cart that we can add items to, retrieve items from, edit quantities, and remove items from. In addition, we should be able to access products and specific products. If you need a reminder on structuring your mutations, queries, or other items, checkout the graphql-yoga documentation and the howtographql documentation.
 
 ## Step 1
 
@@ -37,6 +37,7 @@ type Product {
   category: String!
   price: Int!
 }
+
 type Query {
   products: [Product!]!
 }
@@ -228,6 +229,7 @@ type Product {
   category: String!
   price: Int!
 }
+
 type Query {
   products: [Product!]!
   product(id: ID!): Product
@@ -237,7 +239,7 @@ type Query {
 
 </details>
 
-## Step 4
+## Step 5
 
 ### Summary
 
@@ -299,15 +301,69 @@ type Product {
   price: Int!
   quantity: Int
 }
+
+type Query {
+  products: [Product!]!
+  product(id: ID!): Product
+  cart: [Product]!
+}
+```
+
+</details>
+
+## Step 6
+
+### Summary
+
+Now that we have several ways to Query for data, we'll work on adding methods for updating, deleting, and posting data, otherwise called Muatations in GraphQL.
+
+### Instructions
+* Navigate to the `typeDefs.graphql` file
+    * Here we'll add a type called `Mutation`.
+    * `Mutation` should have 3 properties
+        * `addProductToCart`
+            * Expects an `id` argument of type `ID` (this will reference an item in our products to be added to cart)
+            * Should expect a return value of an array that may or may not be empty or have `Product`. (This will be our updated cart we're returning)
+        * `removeProductFromCart`
+            * Expects an `id` argument of type `ID`
+            * Should expect a required return value of an `ID` (We send this back to tell the UI what item was removed)
+        * `updateQuantity`
+            * Expects an `id` argument of type `ID` and a `change` argument of type `String` (change will be either up or down to increase or decrease the quantity)
+            * Should return a `Product`
+
+### Solution
+
+<details>
+
+<summary> <code> typeDefs.graphql </code> </summary>
+
+```
+type Product {
+  id: ID!
+  title: String!
+  color: String!
+  category: String!
+  price: Int!
+  quantity: Int
+}
+
 type Query {
   products: [Product!]!
   product(id: ID!): Product
   cart: [Product]!
 }
 
+type Mutation {
+  addProductToCart(id: ID!): [Product]!
+  removeProductFromCart(id: ID!): ID!
+  updateQuantity(id: ID!, change: String!): Product
+}
+
 ```
 
 </details>
+
+
 
 ## Contributions
 

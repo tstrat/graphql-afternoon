@@ -186,7 +186,7 @@ Now that our server is running, let's create a Query that will allow us to retri
         * parent (usually denoted by an _ because we won't be using it)
         * args (an object with any arguments, such as id, that are received by the Query or Mutation)
         * context (if we're using it)
-    * product should return a product if one matches the passed in id, or throw an error if there is no matching product.
+    * product should return a product if one matches the passed in id on the arguments objects, or throw an error if there is no matching product.
 * Test in graphiql
 
 
@@ -204,6 +204,7 @@ const resolvers = {
     products() {
       return products;
     },
+    // The second argument is our `arguments` object. It references the passed in arguements for your Query. Here we're destructuring the id, but you could reference it as `args.id`
     product(_, { id }) {
      const item = products.find(val => val.id === +id);
      if (!item) {
@@ -361,6 +362,99 @@ type Mutation {
 
 ```
 
+</details>
+
+## Step 7
+
+### Summary
+
+In this step we'll write the resolver functions that will match up to our `Mutation` type that we described in the previous step.
+
+### Instructions
+* Navigate to the `resolvers.js` file
+    * Add a property whose value should be an object on our exported object called `Mutation`
+    * `Mutation` should have 3 properties that are functions
+        * `addProductToCart`
+            * Expects an `id` argument
+            * Should check to see if the item is already in the cart
+                * If it is, add one to the quantity
+                * If it isn't, find and clone the product, add a quantity property to the clone, and push the clone into the cart
+                * Throw an error if the `id` is not found in the products
+                * Return the cart
+        * `removeProductFromCart`
+            * Expects an `id` argument
+            * Throw an error if the `id` is not in the cart
+            * Should remove the matching product from the cart
+            * Return the `id`
+        * `updateQuantity`
+            * Expects an `id` argument and a `change` argument
+            * Throw an error if the `id` is not in the cart
+            * If the `change` is `up` and one to the matching cartItems quantity
+            * If the `change` is `down` and the cartItems quantity is greater than 0, subtract one from the quantity.
+            * Return the cartItem
+
+### Solution
+
+<details>
+
+<summary> <code> resolvers.js </code> </summary>
+
+```
+let products = require('../models/products');
+let cart = [];
+
+const resolvers = {
+  Query: {
+    products() {
+      return products;
+    },
+    product(_, { id }) {
+      return products.find(val => val.id === +id);
+    },
+    cart() {
+      return cart;
+    }
+  },
+  Mutation: {
+    addProductToCart(_, { id }, req) {
+      const cartItem = cart.find(val => val.id === +id);
+      if (cartItem) {
+        cartItem.quantity += 1;
+      } else {
+        const product = products.find(val => val.id === +id);
+        if (!product) {
+            throw new Error(`No product with ID: ${id}`)
+        }
+        product.quantity = 1;
+        cart.push(product);
+      }
+      return cart;
+    },
+    removeProductFromCart(_, { id }, req) {
+      const cartItem = cart.find(val => val.id === +id);
+      if (!cartItem) {
+        throw new Error(`No product with ID: ${id}`)
+      }
+      cart = cart.filter(val => val.id !== +id);
+      return id;
+    },
+    updateQuantity(_, { id, change }) {
+      const cartItem = cart.find(val => val.id === +id);
+      if (!cartItem) {
+        throw new Error(`No cartItem Matching ID: ${id}`);
+      }
+      if (change === 'up') {
+        cartItem.quantity += 1;
+      } else if (change === 'down' && cartItem.quantity > 0) {
+        cartItem.quantity -= 1;
+      }
+      return cartItem;
+    }
+  }
+};
+
+module.exports = resolvers;
+```
 </details>
 
 

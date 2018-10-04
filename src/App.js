@@ -13,11 +13,11 @@ class App extends Component {
           </p>
           <a
             className="App-link"
-            href="https://reactjs.org"
+            href="https://www.howtographql.com/choose/"
             target="_blank"
             rel="noopener noreferrer"
           >
-            Learn React
+            Learn React + Apollo Or Node + GraphQL
           </a>
         </header>
       </div>

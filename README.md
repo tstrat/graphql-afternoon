@@ -186,7 +186,7 @@ Now that our server is running, let's create a Query that will allow us to retri
         * parent (usually denoted by an _ because we won't be using it)
         * args (an object with any arguments, such as id, that are received by the Query or Mutation)
         * context (if we're using it)
-    * product should return a product if one matches the passed in id on the arguments objects, or throw an error if there is no matching product.
+    * product should return a product if one matches the passed in id on the arguments objects, or throw an error if there is no matching product
 * Test in graphiql
 
 
@@ -244,7 +244,7 @@ type Query {
 
 ### Summary
 
-For this step, we'll add a cart and full CRUD functionality for our cart.
+For this step, we'll add a cart with Query and Mutation functionalities. You could think of this as CRUD operations in a ReSTful API.
 
 ### Instructions
 * Navigate to the `typeDefs.graphql` file
@@ -255,7 +255,7 @@ For this step, we'll add a cart and full CRUD functionality for our cart.
     * It should expect an array of Products that may or may not be empty, but will always be an array.
 * Next, navigate to `resolvers.js`
 * Add a cart variable at the top of the document and default it to an empty array
-* Add a `cart` query that returns the cart.
+* Add a `cart` query that returns the cart
 * Test in graphiql
 
 
@@ -320,7 +320,7 @@ Now that we have several ways to Query for data, we'll work on adding methods fo
 
 ### Instructions
 * Navigate to the `typeDefs.graphql` file
-    * Here we'll add a type called `Mutation`.
+    * Here we'll add a type called `Mutation`
     * `Mutation` should have 3 properties
         * `addProductToCart`
             * Expects an `id` argument of type `ID` (this will reference an item in our products to be added to cart)
@@ -390,7 +390,7 @@ In this step we'll write the resolver functions that will match up to our `Mutat
             * Expects an `id` argument and a `change` argument
             * Throw an error if the `id` is not in the cart
             * If the `change` is `up` and one to the matching cartItems quantity
-            * If the `change` is `down` and the cartItems quantity is greater than 0, subtract one from the quantity.
+            * If the `change` is `down` and the cartItems quantity is greater than 0, subtract one from the quantity
             * Return the cartItem
 * Test in graphiql
 
@@ -467,7 +467,7 @@ module.exports = resolvers;
 
 The following is optional. There are currently no instructions for client setup.
 
-Integrate one or several of your features using the Apollo Client for React. `create-react-app` has already been run for you. You'll need to install the Apollo dependencies, create an Apollo Client, and setup the Apollo Provider to get started.
+Integrate one or several of your features using the Apollo Client for React. `create-react-app` has already been run for you. You'll need to install the Apollo dependencies (graphql, apollo-boost, react-apollo), setup the Apollo Client, and setup the Apollo Provider to get started.
 For a refresher, checkout the Apollo Graphql getting started section <a href="https://www.apollographql.com/docs/react/essentials/get-started.html">here.</a> This will walk you through what you need to install and how to get all the pieces setup.
 
 Be imaginative, or build a vanilla ecommerce frontend, it's up to you!

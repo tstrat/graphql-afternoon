@@ -49,7 +49,7 @@ type Query {
 
 ### Summary
 
-We now need to write a resolver, which is simply a function that aggregates data in some way, that satifies the Product Query we defined previously. It should return an array of products.
+We now need to write a resolver, which is simply a function that aggregates data in some way, that satisfies the Product Query we defined previously. It should return an array of Products.
 
 ### Instructions
 * Navigate to the `resolver.js` file
@@ -85,7 +85,7 @@ module.exports = resolvers;
 
 ### Summary
 
-In this step we'll setup our GraphQL server along with the built in graphiql testing tool. We'll also make our first request to Query data from our graphql server.
+In this step we'll setup our first GraphQL server along with the built in graphiql testing tool. We'll also make our first request to Query data from our graphql server.
 
 ### Instructions
 * Navigate to the `index.js` file
@@ -96,16 +96,16 @@ In this step we'll setup our GraphQL server along with the built in graphiql tes
     * Node does not know how to read `.graphql` files
         * We'll need to use the built in `fs` (file system) module's `readFileSync` property to read the file as `utf8`.
         * Set the output equal to a variable called `typeDefs`
-* Create an options object with port, endpoint, and playground properties
+* Create an `options` object with port, endpoint, and playground properties
     * The port should be 3001
-    * The endpoint should be `/graphql` This is used to send requests from the client to the server.
-    * The playground should be `/graphiql` This is our testing endpoint that enables and makes graphiql viewable in the browser
+    * The endpoint should be `/graphql` This is used to send Queries and Mutations from the client to the server
+    * The playground should be `/graphiql` This is our testing endpoint that enables and makes the graphiql interface viewable in the browser
 * Create your server
     * Declare a variable called server
     * Set server equal to a `new` GraphQLServer
-    * Pass it a config object with your typeDefs and resolver as properties.
+    * Pass it a configuration object with your typeDefs and resolver as properties.
     * In addition, you can pass a context object that has access to the `req` object from express, but we won't be using it for this project. More on that <a href="https://github.com/prisma/graphql-yoga#constructorprops-props-graphqlserver">here.</a>
-    * Start your server by calling `server.start`
+    * Start your server by invoking `server.start`
         * Pass it the `options` from above
         * Pass it a callback to log the port from the options object
 * Test!
@@ -113,8 +113,8 @@ In this step we'll setup our GraphQL server along with the built in graphiql tes
     * Navigate to `http://localhost:3001/graphiql`
     * Explore your `schema` with the interactive docs on the right
     * Query for your products using the pane on the left
-    * You should see an array of products on the right pane
-* From here on out, any time your `Schema` changes, you'll need to refresh your browser so it has the latest version.
+    * After you run your Query, you should see an array of products on the right pane
+* From here on out, any time your `Schema` changes, you'll need to refresh your browser so it has the latest version of your Schema
 
 
 ### Solution

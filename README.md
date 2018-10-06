@@ -13,13 +13,13 @@ We'll start by setting up the skeleton for our GraphQL server. We'll start by cr
 ### Instructions
 * Add a new directory call `schema` to our `server/` directory.
 * Next, add two files to our `schema/` directory
-    * A typeDefs.graphql file (Where we'll set our type definitions using GraphQL's SDL)
+    * A typeDefs.graphql file (Where we'll set our type definitions using GraphQL's Schema Definition Language)
     * A resolvers.js file (Where we'll write the code that will retrieve the data being requested)
 * Take a look at the `server/models/products.js` file
     * Notice the data we have available and what type that data is (Int, Boolean, String, Float, ID)
     * Navigate to our `typeDefs.graphql` file. Create a Product type that matches the structure of our product object. Each property should be marked as required
 * Next, create a Query Type
-    * We'll use the Query Type to describe what we'll be querying for and what the reutrn data should look like.
+    * We'll use the Query Type to describe what we'll be querying for and what the return data should look like.
     * Add a property on our Query Type called products who's return value is an array of Products.
     * The array should always have at least one Product and should always be an array (denoted by the !)
 
